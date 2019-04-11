@@ -13,7 +13,7 @@ a __Borderlands 2__ inspired, part-based random weapon generator for Unity Engin
 
 ## Preview
 
-- [This is](https://youtu.be/icu-sKq9Uzw) a link to an 18-second youtube video showing off the tool in action.
+- [This is](https://youtu.be/icu-sKq9Uzw) a link to an 1-minute youtube video showing off the tool in action.
 
 ## Support Me!
 
