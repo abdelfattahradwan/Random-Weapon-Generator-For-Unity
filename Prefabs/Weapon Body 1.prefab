@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc899434784b4584daee908c0f0cad5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   stockTransform: {fileID: 9034307680476155397}
   handleTransform: {fileID: 9034307679706481682}
   magazineTransform: {fileID: 9034307679673867036}
