@@ -11,6 +11,10 @@ a __Borderlands 2__ inspired, part-based random weapon generator for Unity Engin
 - Can generate random weapon names.
 - Generates random weapon proprties! _(damage, spread, firerate, projectile speed, etc...)_
 
+## Preview
+
+- [This is](https://youtu.be/icu-sKq9Uzw) a link to an 18-second youtube video showing off the tool in action.
+
 ## Support Me!
 
 I'm a 16-year-old student and maintiaing projects like this takes time and resources! So, if you would like to help me out you can contribute to this project by making updates and/or fixs.
