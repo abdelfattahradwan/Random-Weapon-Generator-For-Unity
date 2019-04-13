@@ -1,8 +1,8 @@
-﻿public enum WeaponRarity
+﻿public enum WeaponRank
 {
     Common,
     Uncommon,
     Rare,
+    Epic,
     Legendary,
-    Mythical,
 }

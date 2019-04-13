@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 using UnityEditor;
 
 using UnityEngine;
@@ -7,6 +7,8 @@ using UnityEngine;
 public class EditorRandomWeaponGenerator : EditorWindow
 {
 	private Vector2 scrollview;
+
+	private List<WeaponPropertiesTemplate> templates;
 
 	private List<WeaponBody> weaponBodies;
 
@@ -16,6 +18,7 @@ public class EditorRandomWeaponGenerator : EditorWindow
 	private List<GameObject> scopes;
 	private List<GameObject> barrels;
 
+	private bool showTemplates;
 	private bool showWeaponBodyList;
 	private bool showStockList;
 	private bool showHandleList;
@@ -37,6 +40,8 @@ public class EditorRandomWeaponGenerator : EditorWindow
 
 		window.titleContent = new GUIContent("Random Weapon Generator");
 
+		window.templates = new List<WeaponPropertiesTemplate>();
+
 		window.weaponBodies = new List<WeaponBody>();
 
 		window.stocks = new List<GameObject>();
@@ -49,6 +54,13 @@ public class EditorRandomWeaponGenerator : EditorWindow
 	private void OnGUI()
 	{
 		scrollview = EditorGUILayout.BeginScrollView(scrollview);
+
+		showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates");
+
+		if (showTemplates)
+		{
+			DrawList(ref templates);
+		}
 
 		EditorGUILayout.LabelField("-- Parts --");
 
@@ -108,19 +120,11 @@ public class EditorRandomWeaponGenerator : EditorWindow
 
 			if (GUILayout.Button("Generate Random Weapon Grid"))
 			{
-				var weaponBodyArray = weaponBodies.ToArray();
-
-				var stockArray = stocks.ToArray();
-				var handleArray = handles.ToArray();
-				var magazineArray = magazines.ToArray();
-				var scopeArray = scopes.ToArray();
-				var barrelArray = barrels.ToArray();
-
 				for (int x = 0; x < generatedGridWidth; x++)
 				{
 					for (int y = 0; y < generatedGridHeight; y++)
 					{
-						RuntimeWeaponGenerator.GenerateRandomModel(weaponBodyArray, stockArray, handleArray, magazineArray, scopeArray, barrelArray)
+						RuntimeWeaponGenerator.GenerateRandomWeapon(templates.ElementAtOrDefault(Random.Range(0, templates.Count)), weaponBodies, stocks, handles, magazines, scopes, barrels)
 							.position = new Vector3(x * generatedGridHorizontalOffset, y * generatedGridVerticalOffset, 0f);
 					}
 				}
@@ -130,7 +134,7 @@ public class EditorRandomWeaponGenerator : EditorWindow
 		{
 			if (GUILayout.Button("Generate Random Weapon"))
 			{
-				_ = RuntimeWeaponGenerator.GenerateRandomModel(weaponBodies.ToArray(), stocks.ToArray(), handles.ToArray(), magazines.ToArray(), scopes.ToArray(), barrels.ToArray());
+				_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates.ElementAtOrDefault(Random.Range(0, templates.Count)), weaponBodies, stocks, handles, magazines, scopes, barrels);
 			}
 		}
 

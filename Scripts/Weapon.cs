@@ -1,18 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-	[Header("Others")]
-
 	[SerializeField] private string weaponName;
 
 	[SerializeField] private WeaponType type;
 
-	[SerializeField] private WeaponRarity rarity;
-
-	[Header("Properties")]
+	[SerializeField] private WeaponRank rank;
 
 	[SerializeField] private int magazineSize;
 	[SerializeField] private int remainingShots;
@@ -24,13 +21,12 @@ public class Weapon : MonoBehaviour
 	[SerializeField] private float fireRate;
 	[SerializeField] private float counter;
 
-	[SerializeField] private bool canFire;
 	[SerializeField] private bool isSemiAuto;
-	[SerializeField] private bool repeatFireForeachFirePoint;
+	[SerializeField] private bool repeatFireForEachFirePoint;
 
 	[SerializeField] private Projectile projectilePrefab;
 
-	[SerializeField] private Transform[] firePoints;
+	[SerializeField] private List<Transform> firePoints;
 
 	[Header("Sound FX")]
 
@@ -41,7 +37,7 @@ public class Weapon : MonoBehaviour
 	public string WeaponName { get => weaponName; set => weaponName = value; }
 
 	public WeaponType Type { get => type; set => type = value; }
-	public WeaponRarity Rarity { get => rarity; set => rarity = value; }
+	public WeaponRank Rank { get => rank; set => rank = value; }
 
 	public int MagazineSize { get => magazineSize; set => magazineSize = value; }
 	public int RemainingShots { get => remainingShots; set => remainingShots = value; }
@@ -53,13 +49,12 @@ public class Weapon : MonoBehaviour
 	public float FireRate { get => fireRate; set => fireRate = value; }
 	public float Counter { get => counter; set => counter = value; }
 
-	public bool CanFire { get => canFire; set => canFire = value; }
 	public bool IsSemiAuto { get => isSemiAuto; set => isSemiAuto = value; }
-	public bool RepeatFireForeachFirePoint { get => repeatFireForeachFirePoint; set => repeatFireForeachFirePoint = value; }
+	public bool RepeatFireForEachFirePoint { get => repeatFireForEachFirePoint; set => repeatFireForEachFirePoint = value; }
 
 	public Projectile ProjectilePrefab { get => projectilePrefab; set => projectilePrefab = value; }
 
-	public Transform[] FirePoints { get => firePoints; set => firePoints = value; }
+	public List<Transform> FirePoints { get => firePoints; set => firePoints = value; }
 
 	public AudioSource AudioSource { get => audioSource; set => audioSource = value; }
 
@@ -67,7 +62,7 @@ public class Weapon : MonoBehaviour
 
 	private void Update()
 	{
-		if (canFire)
+		if (remainingShots > 0)
 		{
 			if (isSemiAuto)
 			{
@@ -88,19 +83,17 @@ public class Weapon : MonoBehaviour
 				counter += counter < fireRate ? Time.deltaTime : 0f;
 			}
 		}
-
-		canFire = remainingShots > 0;
 	}
 
 	private void Fire()
 	{
-		if (projectilePrefab != null && projectileCount != 0 && firePoints.Length > 0)
+		if (ProjectilePrefab != null && projectileCount != 0 && FirePoints.Count > 0)
 		{
-			if (repeatFireForeachFirePoint)
+			if (repeatFireForEachFirePoint)
 			{
-				for (int i = 0; i < firePoints.Length; i++)
+				for (int i = 0; i < FirePoints.Count; i++)
 				{
-					var firePoint = firePoints[i];
+					var firePoint = FirePoints[i];
 
 					if (firePoint == null)
 					{
@@ -115,7 +108,7 @@ public class Weapon : MonoBehaviour
 			}
 			else
 			{
-				var firePoint = firePoints[0];
+				var firePoint = FirePoints[0];
 
 				if (firePoint != null)
 				{
@@ -128,7 +121,7 @@ public class Weapon : MonoBehaviour
 
 			void CreateProjectile(Transform firePoint)
 			{
-				var clone = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+				var clone = Instantiate(ProjectilePrefab, firePoint.position, firePoint.rotation);
 
 				clone.transform.eulerAngles += new Vector3(0f, Random.Range(-spread, spread), Random.Range(-spread, spread));
 
@@ -138,15 +131,15 @@ public class Weapon : MonoBehaviour
 			}
 		}
 
-		if (audioSource != null)
+		if (AudioSource != null)
 		{
-			if (sounds != null && sounds.Length != 0)
+			if (Sounds != null && Sounds.Length != 0)
 			{
-				var sound = sounds.ElementAtOrDefault(Random.Range(0, sounds.Length));
+				var sound = Sounds.ElementAtOrDefault(Random.Range(0, Sounds.Length));
 
 				if (sound != null)
 				{
-					audioSource.PlayOneShot(sound);
+					AudioSource.PlayOneShot(sound);
 				}
 			}
 		}
