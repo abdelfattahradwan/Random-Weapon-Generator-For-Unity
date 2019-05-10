@@ -81,36 +81,51 @@ public static class RuntimeWeaponGenerator
 			FireRate = Random.Range(fireRate, Mathf.Max(0f, fireRate - ((fireRate * multiplier) - fireRate))),
 		};
 
-		var properties = new WeaponProperties();
-
 		switch (type)
 		{
 			case WeaponType.Pistol:
-				properties = GeneratePropertiesFromValues(template.BasePistolMagazineSize, template.BasePistolProjectileCount, template.BasePistolDamage, template.BasePistolSpread, template.BasePistolProjectileSpeed, template.BasePistolFireRate);
-				break;
+				return GeneratePropertiesFromValues
+					(template.Pistols.BaseMagazineSize,
+					template.Pistols.BaseProjectileCount,
+					template.Pistols.BaseDamage,
+					template.Pistols.BaseSpread,
+					template.Pistols.BaseProjectileSpeed,
+					template.Pistols.BaseFireRate);
 
 			case WeaponType.SMG:
-				properties = GeneratePropertiesFromValues(template.BaseSMGMagazineSize, template.BaseSMGProjectileCount, template.BaseSMGDamage, template.BaseSMGSpread, template.BaseSMGProjectileSpeed, template.BaseSMGFireRate);
-				break;
+				return GeneratePropertiesFromValues
+					(template.SMGs.BaseMagazineSize,
+					template.SMGs.BaseProjectileCount,
+					template.SMGs.BaseDamage,
+					template.SMGs.BaseSpread,
+					template.SMGs.BaseProjectileSpeed,
+					template.SMGs.BaseFireRate);
 
 			case WeaponType.Rifle:
-				properties = GeneratePropertiesFromValues(template.BaseRifleMagazineSize, template.BaseRifleProjectileCount, template.BaseRifleDamage, template.BaseRifleSpread, template.BaseRifleProjectileSpeed, template.BaseRifleFireRate);
-				break;
+				return GeneratePropertiesFromValues
+					(template.Rifles.BaseMagazineSize,
+					template.Rifles.BaseProjectileCount,
+					template.Rifles.BaseDamage,
+					template.Rifles.BaseSpread,
+					template.Rifles.BaseProjectileSpeed,
+					template.Rifles.BaseFireRate);
 
 			case WeaponType.Shotgun:
-				properties = GeneratePropertiesFromValues(template.BaseShotgunMagazineSize, template.BaseShotgunProjectileCount, template.BaseShotgunDamage, template.BaseShotgunSpread, template.BaseShotgunProjectileSpeed, template.BaseShotgunFireRate);
-				break;
+				return GeneratePropertiesFromValues
+					(template.Shotguns.BaseMagazineSize,
+					template.Shotguns.BaseProjectileCount,
+					template.Shotguns.BaseDamage,
+					template.Shotguns.BaseSpread,
+					template.Shotguns.BaseProjectileSpeed,
+					template.Shotguns.BaseFireRate);
 
 			default:
-				properties = GeneratePropertiesFromValues(0, 0, 0f, 0f, 0f, 0f);
-				break;
+				return GeneratePropertiesFromValues(0, 0, 0f, 0f, 0f, 0f);
 		}
-
-		return properties;
 	}
 
-	public static Transform GenerateRandomWeapon(
-		WeaponPropertiesTemplate weaponPropertiesTemplate,
+	public static Transform GenerateRandomWeapon
+		(WeaponPropertiesTemplate weaponPropertiesTemplate,
 		List<WeaponBody> weaponBodies,
 		List<GameObject> stocks,
 		List<GameObject> handles,

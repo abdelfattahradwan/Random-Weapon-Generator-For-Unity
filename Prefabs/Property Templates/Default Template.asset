@@ -12,30 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bb6fb1252d8444684d5d96c5d994c4, type: 3}
   m_Name: Default Template
   m_EditorClassIdentifier: 
-  basePistolMagazineSize: 8
-  basePistolProjectileCount: 1
-  basePistolDamage: 16
-  basePistolSpread: 4.25
-  basePistolProjectileSpeed: 1250
-  basePistolFireRate: 0.25
-  baseSMGMagazineSize: 24
-  baseSMGProjectileCount: 1
-  baseSMGDamage: 8
-  baseSMGSpread: 6.5
-  baseSMGProjectileSpeed: 1350
-  baseSMGFireRate: 0.125
-  baseRifleMagazineSize: 5
-  baseRifleProjectileCount: 1
-  baseRifleDamage: 25
-  baseRifleSpread: 2.25
-  baseRifleProjectileSpeed: 1500
-  baseRifleFireRate: 0.5
-  baseShotgunMagazineSize: 6
-  baseShotgunProjectileCount: 4
-  baseShotgunDamage: 8
-  baseShotgunSpread: 8
-  baseShotgunProjectileSpeed: 1250
-  baseShotgunFireRate: 0.35
+  pistols:
+    baseMagazineSize: 5
+    baseProjectileCount: 1
+    baseDamage: 10
+    baseSpread: 5
+    baseProjectileSpeed: 1250
+    baseFireRate: 0.25
+  smgs:
+    baseMagazineSize: 24
+    baseProjectileCount: 1
+    baseDamage: 7.5
+    baseSpread: 7.5
+    baseProjectileSpeed: 1500
+    baseFireRate: 0.125
+  rifles:
+    baseMagazineSize: 5
+    baseProjectileCount: 1
+    baseDamage: 25
+    baseSpread: 2.5
+    baseProjectileSpeed: 1750
+    baseFireRate: 0.5
+  shotguns:
+    baseMagazineSize: 4
+    baseProjectileCount: 4
+    baseDamage: 8
+    baseSpread: 15
+    baseProjectileSpeed: 1250
+    baseFireRate: 0.35
   commonRankChance: 0.45
   uncommonRankChance: 0.55
   rareRankChance: 0.75

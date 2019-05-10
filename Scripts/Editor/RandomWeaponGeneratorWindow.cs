@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using UnityEditor;
 
 using UnityEngine;
 
-public class EditorRandomWeaponGenerator : EditorWindow
+public class RandomWeaponGeneratorWindow : EditorWindow
 {
 	private Vector2 scrollview;
 
@@ -36,7 +37,7 @@ public class EditorRandomWeaponGenerator : EditorWindow
 	[MenuItem("Tools/Random Weapon Generator")]
 	public static void Open()
 	{
-		var window = GetWindow<EditorRandomWeaponGenerator>();
+		var window = GetWindow<RandomWeaponGeneratorWindow>();
 
 		window.titleContent = new GUIContent("Random Weapon Generator");
 

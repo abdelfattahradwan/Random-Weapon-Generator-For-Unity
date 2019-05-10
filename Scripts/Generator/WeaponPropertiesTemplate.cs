@@ -1,47 +1,56 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Weapons/Weapon Properties Template")]
 public class WeaponPropertiesTemplate : ScriptableObject
 {
-	[Header("Pistols")]
+	[Serializable]
+	public class WeaponPropertiesSet
+	{
+		[SerializeField] private int baseMagazineSize;
+		[SerializeField] private int baseProjectileCount;
 
-	[SerializeField] private int basePistolMagazineSize;
-	[SerializeField] private int basePistolProjectileCount;
+		[SerializeField] private float baseDamage;
+		[SerializeField] private float baseSpread;
+		[SerializeField] private float baseProjectileSpeed;
+		[SerializeField] private float baseFireRate;
 
-	[SerializeField] private float basePistolDamage;
-	[SerializeField] private float basePistolSpread;
-	[SerializeField] private float basePistolProjectileSpeed;
-	[SerializeField] private float basePistolFireRate;
+		public int BaseMagazineSize { get => baseMagazineSize; set => baseMagazineSize = value; }
+		public int BaseProjectileCount { get => baseProjectileCount; set => baseProjectileCount = value; }
 
-	[Header("SMGs")]
+		public float BaseDamage { get => baseDamage; set => baseDamage = value; }
+		public float BaseSpread { get => baseSpread; set => baseSpread = value; }
+		public float BaseProjectileSpeed { get => baseProjectileSpeed; set => baseProjectileSpeed = value; }
+		public float BaseFireRate { get => baseFireRate; set => baseFireRate = value; }
 
-	[SerializeField] private int baseSMGMagazineSize;
-	[SerializeField] private int baseSMGProjectileCount;
+		public WeaponPropertiesSet(int baseMagazineSize, int baseProjectileCount, float baseDamage, float baseSpread, float baseProjectileSpeed, float baseFireRate)
+		{
+			this.baseMagazineSize = baseMagazineSize;
+			this.baseProjectileCount = baseProjectileCount;
+			this.baseDamage = baseDamage;
+			this.baseSpread = baseSpread;
+			this.baseProjectileSpeed = baseProjectileSpeed;
+			this.baseFireRate = baseFireRate;
+		}
 
-	[SerializeField] private float baseSMGDamage;
-	[SerializeField] private float baseSMGSpread;
-	[SerializeField] private float baseSMGProjectileSpeed;
-	[SerializeField] private float baseSMGFireRate;
+		public WeaponPropertiesSet() { }
+	}
 
-	[Header("Rifles")]
+	[SerializeField] private WeaponPropertiesSet pistols;
 
-	[SerializeField] private int baseRifleMagazineSize;
-	[SerializeField] private int baseRifleProjectileCount;
+	public WeaponPropertiesSet Pistols { get => pistols; set => pistols = value; }
 
-	[SerializeField] private float baseRifleDamage;
-	[SerializeField] private float baseRifleSpread;
-	[SerializeField] private float baseRifleProjectileSpeed;
-	[SerializeField] private float baseRifleFireRate;
+	[SerializeField] private WeaponPropertiesSet smgs;
 
-	[Header("Shotguns")]
+	public WeaponPropertiesSet SMGs { get => smgs; set => smgs = value; }
 
-	[SerializeField] private int baseShotgunMagazineSize;
-	[SerializeField] private int baseShotgunProjectileCount;
+	[SerializeField] private WeaponPropertiesSet rifles;
 
-	[SerializeField] private float baseShotgunDamage;
-	[SerializeField] private float baseShotgunSpread;
-	[SerializeField] private float baseShotgunProjectileSpeed;
-	[SerializeField] private float baseShotgunFireRate;
+	public WeaponPropertiesSet Rifles { get => rifles; set => rifles = value; }
+
+	[SerializeField] private WeaponPropertiesSet shotguns;
+
+	public WeaponPropertiesSet Shotguns { get => shotguns; set => shotguns = value; }
 
 	[Header("Chances & Multipliers")]
 
@@ -56,38 +65,6 @@ public class WeaponPropertiesTemplate : ScriptableObject
 	[SerializeField] private float rareRankMultiplier;
 	[SerializeField] private float epicRankMultiplier;
 	[SerializeField] private float legendaryRankMultiplier;
-
-	public int BasePistolMagazineSize { get => basePistolMagazineSize; set => basePistolMagazineSize = value; }
-	public int BasePistolProjectileCount { get => basePistolProjectileCount; set => basePistolProjectileCount = value; }
-
-	public float BasePistolDamage { get => basePistolDamage; set => basePistolDamage = value; }
-	public float BasePistolSpread { get => basePistolSpread; set => basePistolSpread = value; }
-	public float BasePistolProjectileSpeed { get => basePistolProjectileSpeed; set => basePistolProjectileSpeed = value; }
-	public float BasePistolFireRate { get => basePistolFireRate; set => basePistolFireRate = value; }
-
-	public int BaseSMGMagazineSize { get => baseSMGMagazineSize; set => baseSMGMagazineSize = value; }
-	public int BaseSMGProjectileCount { get => baseSMGProjectileCount; set => baseSMGProjectileCount = value; }
-
-	public float BaseSMGDamage { get => baseSMGDamage; set => baseSMGDamage = value; }
-	public float BaseSMGSpread { get => baseSMGSpread; set => baseSMGSpread = value; }
-	public float BaseSMGProjectileSpeed { get => baseSMGProjectileSpeed; set => baseSMGProjectileSpeed = value; }
-	public float BaseSMGFireRate { get => baseSMGFireRate; set => baseSMGFireRate = value; }
-
-	public int BaseRifleMagazineSize { get => baseRifleMagazineSize; set => baseRifleMagazineSize = value; }
-	public int BaseRifleProjectileCount { get => baseRifleProjectileCount; set => baseRifleProjectileCount = value; }
-
-	public float BaseRifleDamage { get => baseRifleDamage; set => baseRifleDamage = value; }
-	public float BaseRifleSpread { get => baseRifleSpread; set => baseRifleSpread = value; }
-	public float BaseRifleProjectileSpeed { get => baseRifleProjectileSpeed; set => baseRifleProjectileSpeed = value; }
-	public float BaseRifleFireRate { get => baseRifleFireRate; set => baseRifleFireRate = value; }
-
-	public int BaseShotgunMagazineSize { get => baseShotgunMagazineSize; set => baseShotgunMagazineSize = value; }
-	public int BaseShotgunProjectileCount { get => baseShotgunProjectileCount; set => baseShotgunProjectileCount = value; }
-
-	public float BaseShotgunDamage { get => baseShotgunDamage; set => baseShotgunDamage = value; }
-	public float BaseShotgunSpread { get => baseShotgunSpread; set => baseShotgunSpread = value; }
-	public float BaseShotgunProjectileSpeed { get => baseShotgunProjectileSpeed; set => baseShotgunProjectileSpeed = value; }
-	public float BaseShotgunFireRate { get => baseShotgunFireRate; set => baseShotgunFireRate = value; }
 
 	public float CommonRankChance { get => commonRankChance; set => commonRankChance = value; }
 	public float UncommonRankChance { get => uncommonRankChance; set => uncommonRankChance = value; }
