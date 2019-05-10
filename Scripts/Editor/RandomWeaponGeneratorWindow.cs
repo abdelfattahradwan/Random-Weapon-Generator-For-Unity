@@ -56,6 +56,8 @@ public class RandomWeaponGeneratorWindow : EditorWindow
 	{
 		scrollview = EditorGUILayout.BeginScrollView(scrollview);
 
+		EditorGUILayout.HelpBox("Templates", MessageType.None);
+
 		showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates");
 
 		if (showTemplates)
@@ -63,7 +65,7 @@ public class RandomWeaponGeneratorWindow : EditorWindow
 			DrawList(ref templates);
 		}
 
-		EditorGUILayout.LabelField("-- Parts --");
+		EditorGUILayout.HelpBox("Parts", MessageType.None);
 
 		showWeaponBodyList = EditorGUILayout.Foldout(showWeaponBodyList, "Bodies");
 
@@ -107,7 +109,7 @@ public class RandomWeaponGeneratorWindow : EditorWindow
 			DrawList(ref barrels);
 		}
 
-		EditorGUILayout.LabelField("-- Generation --");
+		EditorGUILayout.HelpBox("Generation", MessageType.None);
 
 		generateGrid = EditorGUILayout.Toggle("Generate Grid?", generateGrid);
 
