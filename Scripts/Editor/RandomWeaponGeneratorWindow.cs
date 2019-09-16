@@ -1,180 +1,311 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEditor;
 
 using UnityEngine;
 
-public class RandomWeaponGeneratorWindow : EditorWindow
+namespace WinterboltGames.RandomWeaponGenerator
 {
-	private Vector2 scrollview;
-
-	private List<WeaponPropertiesTemplate> templates;
-
-	private List<WeaponBody> weaponBodies;
-
-	private List<GameObject> stocks;
-	private List<GameObject> handles;
-	private List<GameObject> magazines;
-	private List<GameObject> scopes;
-	private List<GameObject> barrels;
-
-	private bool showTemplates;
-	private bool showWeaponBodyList;
-	private bool showStockList;
-	private bool showHandleList;
-	private bool showMagazineList;
-	private bool showScopeList;
-	private bool showBarrelList;
-	private bool generateGrid;
-
-	private int generatedGridWidth;
-	private int generatedGridHeight;
-
-	private float generatedGridHorizontalOffset;
-	private float generatedGridVerticalOffset;
-
-	[MenuItem("Tools/Random Weapon Generator")]
-	public static void Open()
+	public class RandomWeaponGeneratorWindow : EditorWindow
 	{
-		var window = GetWindow<RandomWeaponGeneratorWindow>();
+		private Vector2 scrollview;
 
-		window.titleContent = new GUIContent("Random Weapon Generator");
+		private List<WeaponPropertiesTemplate> templates;
 
-		window.templates = new List<WeaponPropertiesTemplate>();
+		private List<WeaponBase> weaponBases;
 
-		window.weaponBodies = new List<WeaponBody>();
+		private List<GameObject> stocks;
+		private List<GameObject> handles;
+		private List<GameObject> magazines;
+		private List<GameObject> scopes;
+		private List<GameObject> barrels;
 
-		window.stocks = new List<GameObject>();
-		window.handles = new List<GameObject>();
-		window.magazines = new List<GameObject>();
-		window.scopes = new List<GameObject>();
-		window.barrels = new List<GameObject>();
-	}
+		private bool showTemplates;
+		private bool showWeaponBodyList;
+		private bool showStockList;
+		private bool showHandleList;
+		private bool showMagazineList;
+		private bool showScopeList;
+		private bool showBarrelList;
+		private bool generateGrid;
 
-	private void OnGUI()
-	{
-		scrollview = EditorGUILayout.BeginScrollView(scrollview);
+		private int generatedGridWidth;
+		private int generatedGridHeight;
 
-		EditorGUILayout.HelpBox("Templates", MessageType.None);
+		private float generatedGridHorizontalOffset;
+		private float generatedGridVerticalOffset;
 
-		showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates");
+		private const string ASSET_REFERENCES_INSTANCE_IDS_FILE_NAME = "rwgwariids.bin";
 
-		if (showTemplates)
+		[MenuItem("Tools/Random Weapon Generator")]
+		public static void Open()
 		{
-			DrawList(ref templates);
+			RandomWeaponGeneratorWindow window = GetWindow<RandomWeaponGeneratorWindow>();
+
+			window.titleContent = new GUIContent("Random Weapon Generator");
+
+			window.templates = new List<WeaponPropertiesTemplate>();
+
+			window.weaponBases = new List<WeaponBase>();
+
+			window.stocks = new List<GameObject>();
+			window.handles = new List<GameObject>();
+			window.magazines = new List<GameObject>();
+			window.scopes = new List<GameObject>();
+			window.barrels = new List<GameObject>();
 		}
 
-		EditorGUILayout.HelpBox("Parts", MessageType.None);
-
-		showWeaponBodyList = EditorGUILayout.Foldout(showWeaponBodyList, "Bodies");
-
-		if (showWeaponBodyList)
+		private void OnGUI()
 		{
-			DrawList(ref weaponBodies);
-		}
+			scrollview = EditorGUILayout.BeginScrollView(scrollview);
 
-		showStockList = EditorGUILayout.Foldout(showStockList, "Stocks");
+			EditorGUILayout.HelpBox("Templates", MessageType.None);
 
-		if (showStockList)
-		{
-			DrawList(ref stocks);
-		}
+			showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates");
 
-		showHandleList = EditorGUILayout.Foldout(showHandleList, "Handles");
-
-		if (showHandleList)
-		{
-			DrawList(ref handles);
-		}
-
-		showMagazineList = EditorGUILayout.Foldout(showMagazineList, "Magazines");
-
-		if (showMagazineList)
-		{
-			DrawList(ref magazines);
-		}
-
-		showScopeList = EditorGUILayout.Foldout(showScopeList, "Scopes");
-
-		if (showScopeList)
-		{
-			DrawList(ref scopes);
-		}
-
-		showBarrelList = EditorGUILayout.Foldout(showBarrelList, "Barrels");
-
-		if (showBarrelList)
-		{
-			DrawList(ref barrels);
-		}
-
-		EditorGUILayout.HelpBox("Generation", MessageType.None);
-
-		generateGrid = EditorGUILayout.Toggle("Generate Grid?", generateGrid);
-
-		if (generateGrid)
-		{
-			generatedGridWidth = EditorGUILayout.IntField("Grid Width", generatedGridWidth);
-			generatedGridHeight = EditorGUILayout.IntField("Grid Height", generatedGridHeight);
-
-			generatedGridHorizontalOffset = EditorGUILayout.FloatField("Horizontal Grid Cell Offset", generatedGridHorizontalOffset);
-			generatedGridVerticalOffset = EditorGUILayout.FloatField("Vertical Grid Cell Offset", generatedGridVerticalOffset);
-
-			if (GUILayout.Button("Generate Random Weapon Grid"))
+			if (showTemplates)
 			{
-				for (int x = 0; x < generatedGridWidth; x++)
+				DrawList(ref templates);
+			}
+
+			EditorGUILayout.HelpBox("Parts", MessageType.None);
+
+			showWeaponBodyList = EditorGUILayout.Foldout(showWeaponBodyList, "Bodies");
+
+			if (showWeaponBodyList)
+			{
+				DrawList(ref weaponBases);
+			}
+
+			showStockList = EditorGUILayout.Foldout(showStockList, "Stocks");
+
+			if (showStockList)
+			{
+				DrawList(ref stocks);
+			}
+
+			showHandleList = EditorGUILayout.Foldout(showHandleList, "Handles");
+
+			if (showHandleList)
+			{
+				DrawList(ref handles);
+			}
+
+			showMagazineList = EditorGUILayout.Foldout(showMagazineList, "Magazines");
+
+			if (showMagazineList)
+			{
+				DrawList(ref magazines);
+			}
+
+			showScopeList = EditorGUILayout.Foldout(showScopeList, "Scopes");
+
+			if (showScopeList)
+			{
+				DrawList(ref scopes);
+			}
+
+			showBarrelList = EditorGUILayout.Foldout(showBarrelList, "Barrels");
+
+			if (showBarrelList)
+			{
+				DrawList(ref barrels);
+			}
+
+			EditorGUILayout.HelpBox("Generation", MessageType.None);
+
+			generateGrid = EditorGUILayout.Toggle("Generate Grid?", generateGrid);
+
+			if (generateGrid)
+			{
+				generatedGridWidth = EditorGUILayout.IntField("Grid Width", generatedGridWidth);
+				generatedGridHeight = EditorGUILayout.IntField("Grid Height", generatedGridHeight);
+
+				generatedGridHorizontalOffset = EditorGUILayout.FloatField("Horizontal Grid Cell Offset", generatedGridHorizontalOffset);
+				generatedGridVerticalOffset = EditorGUILayout.FloatField("Vertical Grid Cell Offset", generatedGridVerticalOffset);
+
+				if (GUILayout.Button("Generate Random Weapon Grid"))
 				{
-					for (int y = 0; y < generatedGridHeight; y++)
+					for (int x = 0; x < generatedGridWidth; x++)
 					{
-						RuntimeWeaponGenerator.GenerateRandomWeapon(templates.ElementAtOrDefault(Random.Range(0, templates.Count)), weaponBodies, stocks, handles, magazines, scopes, barrels)
-							.position = new Vector3(x * generatedGridHorizontalOffset, y * generatedGridVerticalOffset, 0f);
+						for (int y = 0; y < generatedGridHeight; y++)
+						{
+							_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates, weaponBases, stocks, handles, magazines, scopes, barrels)
+								.transform.position = new Vector3(x * generatedGridHorizontalOffset, y * generatedGridVerticalOffset, 0f);
+						}
 					}
 				}
 			}
-		}
-		else
-		{
-			if (GUILayout.Button("Generate Random Weapon"))
+			else
 			{
-				_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates.ElementAtOrDefault(Random.Range(0, templates.Count)), weaponBodies, stocks, handles, magazines, scopes, barrels);
-			}
-		}
-
-		EditorGUILayout.EndScrollView();
-	}
-
-	private void DrawList<T>(ref List<T> list) where T : Object
-	{
-		if (GUILayout.Button("Add"))
-		{
-			if (list == null)
-			{
-				list = new List<T>();
-			}
-
-			list.Add(null);
-		}
-
-		if (list != null && list.Count != 0)
-		{
-			for (int i = 0; i < list.Count; i++)
-			{
-				EditorGUILayout.BeginHorizontal();
-
-				list[i] = EditorGUILayout.ObjectField(list[i], typeof(T), false) as T;
-
-				if (GUILayout.Button("-", GUILayout.MaxWidth(32f)))
+				if (GUILayout.Button("Generate Random Weapon"))
 				{
-					list.RemoveAt(i);
+					_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates, weaponBases, stocks, handles, magazines, scopes, barrels);
+				}
+			}
+
+			EditorGUILayout.HelpBox("Asset References", MessageType.None);
+
+			if (GUILayout.Button("Save Asset References"))
+			{
+				SaveAssetReferences();
+			}
+
+			if (GUILayout.Button("Load Asset References"))
+			{
+				LoadAssetReferences();
+			}
+
+			EditorGUILayout.EndScrollView();
+		}
+
+		private void SaveAssetReferences()
+		{
+			List<int> templatesInstanceIDs = new List<int>();
+			List<int> weaponBasesInstanceIDs = new List<int>();
+			List<int> stocksInstanceIDs = new List<int>();
+			List<int> handlesInstanceIDs = new List<int>();
+			List<int> magazinesInstanceIDs = new List<int>();
+			List<int> scopesInstanceIDs = new List<int>();
+			List<int> barrelsInstanceIDs = new List<int>();
+
+			templates?.ForEach(template =>
+			{
+				if (template != null)
+				{
+					templatesInstanceIDs.Add(template.GetInstanceID());
+				}
+			});
+
+			weaponBases?.ForEach(weaponBase =>
+			{
+				if (weaponBase != null)
+				{
+					weaponBasesInstanceIDs.Add(weaponBase.GetInstanceID());
+				}
+			});
+
+			stocks?.ForEach(stock =>
+			{
+				if (stock != null)
+				{
+					stocksInstanceIDs.Add(stock.GetInstanceID());
+				}
+			});
+
+			handles?.ForEach(handle =>
+			{
+				if (handle != null)
+				{
+					handlesInstanceIDs.Add(handle.GetInstanceID());
+				}
+			});
+
+			magazines?.ForEach(magazine =>
+			{
+				if (magazine != null)
+				{
+					magazinesInstanceIDs.Add(magazine.GetInstanceID());
+				}
+			});
+
+			scopes?.ForEach(scope =>
+			{
+				if (scope != null)
+				{
+					scopesInstanceIDs.Add(scope.GetInstanceID());
+				}
+			});
+
+			barrels?.ForEach(barrel =>
+			{
+				if (barrel != null)
+				{
+					barrelsInstanceIDs.Add(barrel.GetInstanceID());
+				}
+			});
+
+			List<int>[] lists = new List<int>[7]
+			{
+				templatesInstanceIDs,
+				weaponBasesInstanceIDs,
+				stocksInstanceIDs,
+				handlesInstanceIDs,
+				magazinesInstanceIDs,
+				scopesInstanceIDs,
+				barrelsInstanceIDs,
+			};
+
+			using (FileStream fileStream = new FileStream(Path.Combine("Temp", ASSET_REFERENCES_INSTANCE_IDS_FILE_NAME), FileMode.Create))
+			{
+				new BinaryFormatter().Serialize(fileStream, lists);
+			}
+		}
+
+		private void LoadAssetReferences()
+		{
+			templates?.Clear();
+			weaponBases?.Clear();
+			stocks?.Clear();
+			handles?.Clear();
+			magazines?.Clear();
+			scopes?.Clear();
+			barrels?.Clear();
+
+			string filePath = Path.Combine("Temp", ASSET_REFERENCES_INSTANCE_IDS_FILE_NAME);
+
+			if (File.Exists(filePath))
+			{
+				List<int>[] lists = new List<int>[0];
+
+				using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
+				{
+					lists = new BinaryFormatter().Deserialize(fileStream) as List<int>[];
 				}
 
-				EditorGUILayout.EndHorizontal();
+				lists[0].ForEach(id => templates?.Add(AssetDatabase.LoadAssetAtPath<WeaponPropertiesTemplate>(AssetDatabase.GetAssetPath(id))));
+				lists[1].ForEach(id => weaponBases?.Add(AssetDatabase.LoadAssetAtPath<WeaponBase>(AssetDatabase.GetAssetPath(id))));
+				lists[2].ForEach(id => stocks?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
+				lists[3].ForEach(id => handles?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
+				lists[4].ForEach(id => magazines?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
+				lists[5].ForEach(id => scopes?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
+				lists[6].ForEach(id => barrels?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
 			}
 		}
-		else
+
+		private void DrawList<T>(ref List<T> list) where T : Object
 		{
-			EditorGUILayout.LabelField("Empty...", EditorStyles.centeredGreyMiniLabel);
+			if (GUILayout.Button("Add"))
+			{
+				if (list == null)
+				{
+					list = new List<T>();
+				}
+
+				list.Add(null);
+			}
+
+			if (list != null && list.Count != 0)
+			{
+				for (int i = 0; i < list.Count; i++)
+				{
+					EditorGUILayout.BeginHorizontal();
+
+					list[i] = EditorGUILayout.ObjectField(list[i], typeof(T), false) as T;
+
+					if (GUILayout.Button("-", GUILayout.MaxWidth(32f)))
+					{
+						list.RemoveAt(i);
+					}
+
+					EditorGUILayout.EndHorizontal();
+				}
+			}
+			else
+			{
+				EditorGUILayout.LabelField("Empty...", EditorStyles.centeredGreyMiniLabel);
+			}
 		}
 	}
 }

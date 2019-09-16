@@ -1,7 +1,10 @@
-﻿public enum WeaponType
+﻿namespace WinterboltGames.RandomWeaponGenerator.Core
 {
-    Pistol,
-    SMG,
-    Rifle,
-    Shotgun,
+	public enum WeaponType
+	{
+		Pistol,
+		SMG,
+		Rifle,
+		Shotgun,
+	}
 }

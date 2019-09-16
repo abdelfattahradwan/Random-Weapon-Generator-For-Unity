@@ -3,10 +3,12 @@ using System.Linq;
 
 using UnityEngine;
 
-public static class RuntimeWeaponGenerator
+namespace WinterboltGames.RandomWeaponGenerator
 {
-	public static readonly string[] WEAPON_MANUFACTURERS = new string[9]
+	public static class RuntimeWeaponGenerator
 	{
+		public static readonly string[] WEAPON_MANUFACTURERS = new string[9]
+		{
 		"Lockheed Martin",
 		"Boeing",
 		"BAE Systems",
@@ -16,10 +18,10 @@ public static class RuntimeWeaponGenerator
 		"Airbus Group",
 		"United Technologies",
 		"L-3 Technologies",
-	};
+		};
 
-	public static readonly string[] LETTERS = new string[]
-	{
+		public static readonly string[] LETTERS = new string[]
+		{
 		"A",
 		"AA",
 		"F",
@@ -27,213 +29,164 @@ public static class RuntimeWeaponGenerator
 		"M",
 		"MG",
 		"MP",
-	};
-
-	public static string GenerateRandomWeaponName()
-	{
-		return $"{WEAPON_MANUFACTURERS[Random.Range(0, WEAPON_MANUFACTURERS.Length)]} {LETTERS[Random.Range(0, LETTERS.Length)]}-{Random.Range(1, 1024)}";
-	}
-
-	public static WeaponProperties GenerateRandomWeaponProperties(WeaponPropertiesTemplate template, WeaponType type)
-	{
-		var chance = Random.value;
-
-		var multiplier = 1f;
-
-		var rank = WeaponRank.Common;
-
-		if (chance <= template.CommonRankChance)
-		{
-			multiplier = template.CommonRankMultiplier;
-			rank = WeaponRank.Common;
-		}
-		else if (chance > template.CommonRankChance && chance <= template.UncommonRankChance)
-		{
-			multiplier = template.UncommonRankChance;
-			rank = WeaponRank.Uncommon;
-		}
-		else if (chance > template.UncommonRankChance && chance <= template.RareRankChance)
-		{
-			multiplier = template.RareRankMultiplier;
-			rank = WeaponRank.Rare;
-		}
-		else if (chance > template.RareRankChance && chance <= template.EpicRankChance)
-		{
-			multiplier = template.EpicRankMultiplier;
-			rank = WeaponRank.Epic;
-		}
-		else if (chance > template.EpicRankChance && chance <= template.LegendaryRankChance)
-		{
-			multiplier = template.LegendaryRankMultiplier;
-			rank = WeaponRank.Legendary;
-		}
-
-		WeaponProperties GeneratePropertiesFromValues(int magazineSize, int projectileCount, float damage, float spread, float projectileSpeed, float fireRate) => new WeaponProperties()
-		{
-			Rank = rank,
-
-			MagazineSize = Mathf.RoundToInt(Random.Range(magazineSize, magazineSize * multiplier)),
-			ProjectileCount = Mathf.RoundToInt(Random.Range(projectileCount, projectileCount * multiplier)),
-
-			Damage = Random.Range(damage, damage * multiplier),
-			Spread = Random.Range(spread, Mathf.Max(0f, spread - ((spread * multiplier) - spread))),
-			ProjectileSpeed = Random.Range(projectileSpeed, projectileSpeed * multiplier),
-			FireRate = Random.Range(fireRate, Mathf.Max(0f, fireRate - ((fireRate * multiplier) - fireRate))),
 		};
 
-		switch (type)
+		public static string GenerateRandomWeaponName()
 		{
-			case WeaponType.Pistol:
-				return GeneratePropertiesFromValues
-					(template.Pistols.BaseMagazineSize,
-					template.Pistols.BaseProjectileCount,
-					template.Pistols.BaseDamage,
-					template.Pistols.BaseSpread,
-					template.Pistols.BaseProjectileSpeed,
-					template.Pistols.BaseFireRate);
-
-			case WeaponType.SMG:
-				return GeneratePropertiesFromValues
-					(template.SMGs.BaseMagazineSize,
-					template.SMGs.BaseProjectileCount,
-					template.SMGs.BaseDamage,
-					template.SMGs.BaseSpread,
-					template.SMGs.BaseProjectileSpeed,
-					template.SMGs.BaseFireRate);
-
-			case WeaponType.Rifle:
-				return GeneratePropertiesFromValues
-					(template.Rifles.BaseMagazineSize,
-					template.Rifles.BaseProjectileCount,
-					template.Rifles.BaseDamage,
-					template.Rifles.BaseSpread,
-					template.Rifles.BaseProjectileSpeed,
-					template.Rifles.BaseFireRate);
-
-			case WeaponType.Shotgun:
-				return GeneratePropertiesFromValues
-					(template.Shotguns.BaseMagazineSize,
-					template.Shotguns.BaseProjectileCount,
-					template.Shotguns.BaseDamage,
-					template.Shotguns.BaseSpread,
-					template.Shotguns.BaseProjectileSpeed,
-					template.Shotguns.BaseFireRate);
-
-			default:
-				return GeneratePropertiesFromValues(0, 0, 0f, 0f, 0f, 0f);
+			return $"{WEAPON_MANUFACTURERS[Random.Range(0, WEAPON_MANUFACTURERS.Length)]} {LETTERS[Random.Range(0, LETTERS.Length)]}-{Random.Range(1, 1024)}";
 		}
-	}
 
-	public static Transform GenerateRandomWeapon
-		(WeaponPropertiesTemplate weaponPropertiesTemplate,
-		List<WeaponBody> weaponBodies,
-		List<GameObject> stocks,
-		List<GameObject> handles,
-		List<GameObject> magazines,
-		List<GameObject> scopes,
-		List<GameObject> barrels)
-	{
-		if (weaponPropertiesTemplate != null && weaponBodies != null && weaponBodies.Count != 0)
+		public static WeaponProperties GenerateRandomWeaponProperties(string categoryName, WeaponPropertiesTemplate template)
 		{
-			var weaponBody = weaponBodies.ElementAtOrDefault(Random.Range(0, weaponBodies.Count));
+			float chance = Random.value;
 
-			if (weaponBody != null)
+			float multiplier = 1f;
+
+			WeaponRank rank = WeaponRank.Common;
+
+			if (chance <= template.CommonRankChance)
 			{
-				var selectedStock = stocks.ElementAtOrDefault(Random.Range(0, stocks.Count));
-				var selectedHandle = handles.ElementAtOrDefault(Random.Range(0, handles.Count));
-				var selectedMagazine = magazines.ElementAtOrDefault(Random.Range(0, magazines.Count));
-				var selectedScope = scopes.ElementAtOrDefault(Random.Range(0, scopes.Count));
-				var selectedBarrel = barrels.ElementAtOrDefault(Random.Range(0, barrels.Count));
+				multiplier = template.CommonRankMultiplier;
 
-				var weaponName = GenerateRandomWeaponName();
+				rank = WeaponRank.Common;
+			}
+			else if (chance > template.CommonRankChance && chance <= template.UncommonRankChance)
+			{
+				multiplier = template.UncommonRankChance;
 
-				var generatedWeaponRootTransform = new GameObject($"{weaponName} {weaponBody.Type.ToString()}").transform;
+				rank = WeaponRank.Uncommon;
+			}
+			else if (chance > template.UncommonRankChance && chance <= template.RareRankChance)
+			{
+				multiplier = template.RareRankMultiplier;
 
-				var generatedWeaponBodyInstance = Object.Instantiate(weaponBody, generatedWeaponRootTransform);
+				rank = WeaponRank.Rare;
+			}
+			else if (chance > template.RareRankChance && chance <= template.EpicRankChance)
+			{
+				multiplier = template.EpicRankMultiplier;
 
-				var weaponComponent = generatedWeaponRootTransform.gameObject.AddComponent<Weapon>();
+				rank = WeaponRank.Epic;
+			}
+			else if (chance > template.EpicRankChance && chance <= template.LegendaryRankChance)
+			{
+				multiplier = template.LegendaryRankMultiplier;
 
-				var properties = GenerateRandomWeaponProperties(weaponPropertiesTemplate, weaponBody.Type);
+				rank = WeaponRank.Legendary;
+			}
 
-				weaponComponent.WeaponName = weaponName;
+			for (int i = 0; i < template.Categories.Count; i++)
+			{
+				WeaponProperties category = template.Categories[i];
 
-				weaponComponent.Type = weaponBody.Type;
-
-				weaponComponent.Rank = properties.Rank;
-
-				weaponComponent.RemainingShots = weaponComponent.MagazineSize = properties.MagazineSize;
-				weaponComponent.ProjectileCount = properties.ProjectileCount;
-				weaponComponent.Damage = properties.Damage;
-				weaponComponent.Spread = properties.Spread;
-				weaponComponent.ProjectileSpeed = properties.ProjectileSpeed;
-				weaponComponent.FireRate = properties.FireRate;
-
-				weaponComponent.FirePoints = new List<Transform>();
-
-				if (selectedStock != null)
+				if (category != null)
 				{
-					var stockTransform = generatedWeaponBodyInstance.StockTransform;
-
-					if (stockTransform != null)
+					if (!string.IsNullOrEmpty(category.CategoryName) || !string.IsNullOrWhiteSpace(category.CategoryName))
 					{
-						_ = Object.Instantiate(selectedStock, stockTransform.position, stockTransform.rotation, stockTransform);
-					}
-				}
-
-				if (selectedHandle != null)
-				{
-					var handleTransform = generatedWeaponBodyInstance.HandleTransform;
-
-					if (handleTransform != null)
-					{
-						_ = Object.Instantiate(selectedHandle, handleTransform.position, handleTransform.rotation, handleTransform);
-					}
-				}
-
-				if (selectedMagazine != null)
-				{
-					var magazineTransform = generatedWeaponBodyInstance.MagazineTransform;
-
-					if (magazineTransform != null)
-					{
-						_ = Object.Instantiate(selectedMagazine, magazineTransform.position, magazineTransform.rotation, magazineTransform);
-					}
-				}
-
-				if (selectedScope != null)
-				{
-					var scopeTransform = generatedWeaponBodyInstance.ScopeTransform;
-
-					if (scopeTransform != null)
-					{
-						_ = Object.Instantiate(selectedScope, scopeTransform.position, scopeTransform.rotation, scopeTransform);
-					}
-				}
-
-				if (selectedBarrel != null)
-				{
-					var barrelTransform = generatedWeaponBodyInstance.BarrelTransform;
-
-					if (barrelTransform != null)
-					{
-						var barrelInstanceTransform = Object.Instantiate(selectedBarrel, barrelTransform.position, barrelTransform.rotation, barrelTransform).transform;
-
-						for (int i = 0; i < barrelInstanceTransform.childCount; i++)
+						if (string.Compare(category.CategoryName, categoryName) == 0)
 						{
-							var firePoint = barrelInstanceTransform.GetChild(i);
-
-							if (firePoint != null)
+							return new WeaponProperties()
 							{
-								weaponComponent.FirePoints.Add(firePoint);
-							}
+								CategoryName = categoryName,
+
+								Rank = rank,
+
+								Damage = Random.Range(category.Damage, category.Damage * multiplier),
+								Accuracy = Random.Range(category.Accuracy, Mathf.Max(0f, category.Accuracy - ((category.Accuracy * multiplier) - category.Accuracy))),
+								Recoil = Random.Range(category.Recoil, Mathf.Max(0f, category.Recoil - ((category.Recoil * multiplier) - category.Recoil))),
+								FireRate = Random.Range(category.FireRate, Mathf.Max(0f, category.FireRate - ((category.FireRate * multiplier) - category.FireRate))),
+
+								ProjectilesPerShot = Mathf.RoundToInt(Random.Range(category.ProjectilesPerShot, category.ProjectilesPerShot * multiplier)),
+								MagazineSize = Mathf.RoundToInt(Random.Range(category.MagazineSize, category.MagazineSize * multiplier)),
+							};
 						}
 					}
 				}
-
-				return generatedWeaponRootTransform;
 			}
+
+			return new WeaponProperties();
 		}
 
-		return null;
+		public static WeaponBase GenerateRandomWeapon
+			(List<WeaponPropertiesTemplate> templates,
+			List<WeaponBase> weaponBases,
+			List<GameObject> stocks,
+			List<GameObject> handles,
+			List<GameObject> magazines,
+			List<GameObject> scopes,
+			List<GameObject> barrels)
+		{
+			if (templates != null && weaponBases != null && weaponBases.Count != 0)
+			{
+				WeaponBase weaponBase = weaponBases.ElementAtOrDefault(Random.Range(0, weaponBases.Count));
+
+				if (weaponBase != null)
+				{
+					GameObject selectedStock = stocks.ElementAtOrDefault(Random.Range(0, stocks.Count));
+					GameObject selectedHandle = handles.ElementAtOrDefault(Random.Range(0, handles.Count));
+					GameObject selectedMagazine = magazines.ElementAtOrDefault(Random.Range(0, magazines.Count));
+					GameObject selectedScope = scopes.ElementAtOrDefault(Random.Range(0, scopes.Count));
+					GameObject selectedBarrel = barrels.ElementAtOrDefault(Random.Range(0, barrels.Count));
+
+					WeaponBase generatedWeaponBase = Object.Instantiate(weaponBase, new GameObject($"{GenerateRandomWeaponName()} {weaponBase.Properties.CategoryName}").transform);
+
+					generatedWeaponBase.Properties = GenerateRandomWeaponProperties(generatedWeaponBase.Category, templates.ElementAtOrDefault(Random.Range(0, templates.Count)));
+
+					if (selectedStock != null)
+					{
+						Transform stockTransform = generatedWeaponBase.StockTransform;
+
+						if (stockTransform != null)
+						{
+							_ = Object.Instantiate(selectedStock, stockTransform.position, stockTransform.rotation, stockTransform);
+						}
+					}
+
+					if (selectedHandle != null)
+					{
+						Transform handleTransform = generatedWeaponBase.HandleTransform;
+
+						if (handleTransform != null)
+						{
+							_ = Object.Instantiate(selectedHandle, handleTransform.position, handleTransform.rotation, handleTransform);
+						}
+					}
+
+					if (selectedMagazine != null)
+					{
+						Transform magazineTransform = generatedWeaponBase.MagazineTransform;
+
+						if (magazineTransform != null)
+						{
+							_ = Object.Instantiate(selectedMagazine, magazineTransform.position, magazineTransform.rotation, magazineTransform);
+						}
+					}
+
+					if (selectedScope != null)
+					{
+						Transform scopeTransform = generatedWeaponBase.ScopeTransform;
+
+						if (scopeTransform != null)
+						{
+							_ = Object.Instantiate(selectedScope, scopeTransform.position, scopeTransform.rotation, scopeTransform);
+						}
+					}
+
+					if (selectedBarrel != null)
+					{
+						Transform barrelTransform = generatedWeaponBase.BarrelTransform;
+
+						if (barrelTransform != null)
+						{
+							_ = Object.Instantiate(selectedBarrel, barrelTransform.position, barrelTransform.rotation, barrelTransform);
+						}
+					}
+
+					return generatedWeaponBase;
+				}
+			}
+
+			return default;
+		}
 	}
 }

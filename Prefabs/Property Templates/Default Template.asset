@@ -12,34 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bb6fb1252d8444684d5d96c5d994c4, type: 3}
   m_Name: Default Template
   m_EditorClassIdentifier: 
-  pistols:
-    baseMagazineSize: 5
-    baseProjectileCount: 1
-    baseDamage: 10
-    baseSpread: 5
-    baseProjectileSpeed: 1250
-    baseFireRate: 0.25
-  smgs:
-    baseMagazineSize: 24
-    baseProjectileCount: 1
-    baseDamage: 7.5
-    baseSpread: 7.5
-    baseProjectileSpeed: 1500
-    baseFireRate: 0.125
-  rifles:
-    baseMagazineSize: 5
-    baseProjectileCount: 1
-    baseDamage: 25
-    baseSpread: 2.5
-    baseProjectileSpeed: 1750
-    baseFireRate: 0.5
-  shotguns:
-    baseMagazineSize: 4
-    baseProjectileCount: 4
-    baseDamage: 8
-    baseSpread: 15
-    baseProjectileSpeed: 1250
-    baseFireRate: 0.35
+  categories:
+  - categoryName: Pistols
+    rank: 0
+    damage: 24.88
+    accuracy: 1.3
+    recoil: 1.51
+    fireRate: 0.25
+    projectilesPerShot: 1
+    magazineSize: 6
+  - categoryName: SMGs
+    rank: 0
+    damage: 24.88
+    accuracy: 1.3
+    recoil: 1.51
+    fireRate: 0.125
+    projectilesPerShot: 1
+    magazineSize: 24
+  - categoryName: Rifles
+    rank: 0
+    damage: 50
+    accuracy: 1.5
+    recoil: 2
+    fireRate: 0.5
+    projectilesPerShot: 1
+    magazineSize: 5
   commonRankChance: 0.45
   uncommonRankChance: 0.55
   rareRankChance: 0.75

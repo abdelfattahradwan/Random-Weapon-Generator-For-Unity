@@ -1,8 +1,11 @@
-﻿public enum WeaponRank
+﻿namespace WinterboltGames.RandomWeaponGenerator
 {
-    Common,
-    Uncommon,
-    Rare,
-    Epic,
-    Legendary,
+	public enum WeaponRank
+	{
+		Common,
+		Uncommon,
+		Rare,
+		Epic,
+		Legendary,
+	}
 }
