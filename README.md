@@ -25,4 +25,4 @@ Since this project doesn't rely on any other plugin, it works with any Unity ver
 
 ## Support Me!
 
-I'm a 16-year-old student and maintiaing projects like this takes time and resources! So, if you would like to help me out you can contribute to this project by making updates and/or fixes. <sub>(or you can support me with a monthly donation [here on Patreon!](https://www.patreon.com/winterboltgames))</sub>
+I'm a 17-year-old student and maintiaing projects like this takes time and resources! So, if you would like to help me out you can contribute to this project by making updates and/or fixes. <sub>(or you can support me with a monthly donation [here on Patreon!](https://www.patreon.com/winterboltgames))</sub>
