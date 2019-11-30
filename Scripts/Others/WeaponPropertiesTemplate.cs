@@ -9,6 +9,8 @@ namespace WinterboltGames.RandomWeaponGenerator
 	{
 		[SerializeField] private List<WeaponProperties> categories;
 
+		[SerializeField] private List<string> nameFormats;
+
 		[Header("Chances & Multipliers")]
 
 		[SerializeField, Range(0f, 1f)] private float commonRankChance;
@@ -24,6 +26,8 @@ namespace WinterboltGames.RandomWeaponGenerator
 		[SerializeField] private float legendaryRankMultiplier;
 
 		public List<WeaponProperties> Categories { get => categories; set => categories = value; }
+
+		public List<string> NameFormats { get => nameFormats; set => nameFormats = value; }
 
 		public float CommonRankChance { get => commonRankChance; set => commonRankChance = value; }
 		public float UncommonRankChance { get => uncommonRankChance; set => uncommonRankChance = value; }

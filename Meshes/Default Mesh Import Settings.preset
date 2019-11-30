@@ -141,6 +141,10 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_SortHierarchyByName
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_ImportVisibility
     value: 0
     objectReference: {fileID: 0}
@@ -169,10 +173,6 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: optimizeMeshForGPU
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: keepQuads
     value: 0
     objectReference: {fileID: 0}
@@ -183,6 +183,22 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_PreserveHierarchy
     value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: skinWeightsMode
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxBonesPerVertex
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: minBoneWeight
+    value: 0.001
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: meshOptimizationFlags
+    value: -1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: indexFormat
@@ -207,14 +223,6 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_UseFileScale
     value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_PreviousCalculatedGlobalScale
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: m_HasPreviousCalculatedGlobalScale
-    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: normalSmoothAngle
@@ -242,6 +250,10 @@ Preset:
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: normalSmoothingSource
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_ReferencedClips.Array.size
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -287,6 +299,10 @@ Preset:
   - target: {fileID: 0}
     propertyPath: m_HumanDescription.m_FeetSpacing
     value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_HumanDescription.m_GlobalScale
+    value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: m_HumanDescription.m_RootMotionBoneName

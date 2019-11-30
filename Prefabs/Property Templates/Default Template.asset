@@ -37,6 +37,10 @@ MonoBehaviour:
     fireRate: 0.5
     projectilesPerShot: 1
     magazineSize: 5
+  nameFormats:
+  - DD-LL
+  - DL-LD
+  - LL m/DDDD
   commonRankChance: 0.45
   uncommonRankChance: 0.55
   rareRankChance: 0.75

@@ -69,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -93,9 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: befc79d8ae3f7c64c80ca53a54553dfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: Pistols
+  category: Pistol
   properties:
-    categoryName: 
+    categoryName: Pistol
     rank: 0
     damage: 0
     accuracy: 0
@@ -104,7 +105,7 @@ MonoBehaviour:
     projectilesPerShot: 0
     magazineSize: 0
   stockTransform: {fileID: 0}
-  handleTransform: {fileID: 5492018983409400283}
+  gripTransform: {fileID: 5492018983409400283}
   magazineTransform: {fileID: 0}
   scopeTransform: {fileID: 5492018982971845277}
   barrelTransform: {fileID: 5492018983145489380}
@@ -178,7 +179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5492018983409400283}
   m_Layer: 0
-  m_Name: Handle Transform
+  m_Name: Grip Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

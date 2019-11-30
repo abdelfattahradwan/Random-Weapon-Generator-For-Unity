@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+
 using UnityEditor;
 
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 		private List<WeaponBase> weaponBases;
 
 		private List<GameObject> stocks;
-		private List<GameObject> handles;
+		private List<GameObject> grips;
 		private List<GameObject> magazines;
 		private List<GameObject> scopes;
 		private List<GameObject> barrels;
@@ -24,7 +25,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 		private bool showTemplates;
 		private bool showWeaponBodyList;
 		private bool showStockList;
-		private bool showHandleList;
+		private bool showGripList;
 		private bool showMagazineList;
 		private bool showScopeList;
 		private bool showBarrelList;
@@ -50,7 +51,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 			window.weaponBases = new List<WeaponBase>();
 
 			window.stocks = new List<GameObject>();
-			window.handles = new List<GameObject>();
+			window.grips = new List<GameObject>();
 			window.magazines = new List<GameObject>();
 			window.scopes = new List<GameObject>();
 			window.barrels = new List<GameObject>();
@@ -62,62 +63,46 @@ namespace WinterboltGames.RandomWeaponGenerator
 
 			EditorGUILayout.HelpBox("Templates", MessageType.None);
 
-			showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates");
-
-			if (showTemplates)
+			if (showTemplates = EditorGUILayout.Foldout(showTemplates, "Templates"))
 			{
 				DrawList(ref templates);
 			}
 
 			EditorGUILayout.HelpBox("Parts", MessageType.None);
 
-			showWeaponBodyList = EditorGUILayout.Foldout(showWeaponBodyList, "Bodies");
-
-			if (showWeaponBodyList)
+			if (showWeaponBodyList = EditorGUILayout.Foldout(showWeaponBodyList, "Bodies"))
 			{
 				DrawList(ref weaponBases);
 			}
 
-			showStockList = EditorGUILayout.Foldout(showStockList, "Stocks");
-
-			if (showStockList)
+			if (showStockList = EditorGUILayout.Foldout(showStockList, "Stocks"))
 			{
 				DrawList(ref stocks);
 			}
 
-			showHandleList = EditorGUILayout.Foldout(showHandleList, "Handles");
-
-			if (showHandleList)
+			if (showGripList = EditorGUILayout.Foldout(showGripList, "Grips"))
 			{
-				DrawList(ref handles);
+				DrawList(ref grips);
 			}
 
-			showMagazineList = EditorGUILayout.Foldout(showMagazineList, "Magazines");
-
-			if (showMagazineList)
+			if (showMagazineList = EditorGUILayout.Foldout(showMagazineList, "Magazines"))
 			{
 				DrawList(ref magazines);
 			}
 
-			showScopeList = EditorGUILayout.Foldout(showScopeList, "Scopes");
-
-			if (showScopeList)
+			if (showScopeList = EditorGUILayout.Foldout(showScopeList, "Scopes"))
 			{
 				DrawList(ref scopes);
 			}
 
-			showBarrelList = EditorGUILayout.Foldout(showBarrelList, "Barrels");
-
-			if (showBarrelList)
+			if (showBarrelList = EditorGUILayout.Foldout(showBarrelList, "Barrels"))
 			{
 				DrawList(ref barrels);
 			}
 
 			EditorGUILayout.HelpBox("Generation", MessageType.None);
 
-			generateGrid = EditorGUILayout.Toggle("Generate Grid?", generateGrid);
-
-			if (generateGrid)
+			if (generateGrid = EditorGUILayout.Toggle("Generate Grid?", generateGrid))
 			{
 				generatedGridWidth = EditorGUILayout.IntField("Grid Width", generatedGridWidth);
 				generatedGridHeight = EditorGUILayout.IntField("Grid Height", generatedGridHeight);
@@ -131,7 +116,8 @@ namespace WinterboltGames.RandomWeaponGenerator
 					{
 						for (int y = 0; y < generatedGridHeight; y++)
 						{
-							_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates, weaponBases, stocks, handles, magazines, scopes, barrels)
+							_ = RuntimeWeaponGenerator
+								.GenerateRandomWeapon(templates, weaponBases, stocks, grips, magazines, scopes, barrels)
 								.transform.position = new Vector3(x * generatedGridHorizontalOffset, y * generatedGridVerticalOffset, 0f);
 						}
 					}
@@ -141,7 +127,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 			{
 				if (GUILayout.Button("Generate Random Weapon"))
 				{
-					_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates, weaponBases, stocks, handles, magazines, scopes, barrels);
+					_ = RuntimeWeaponGenerator.GenerateRandomWeapon(templates, weaponBases, stocks, grips, magazines, scopes, barrels);
 				}
 			}
 
@@ -194,7 +180,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 				}
 			});
 
-			handles?.ForEach(handle =>
+			grips?.ForEach(handle =>
 			{
 				if (handle != null)
 				{
@@ -248,7 +234,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 			templates?.Clear();
 			weaponBases?.Clear();
 			stocks?.Clear();
-			handles?.Clear();
+			grips?.Clear();
 			magazines?.Clear();
 			scopes?.Clear();
 			barrels?.Clear();
@@ -267,7 +253,7 @@ namespace WinterboltGames.RandomWeaponGenerator
 				lists[0].ForEach(id => templates?.Add(AssetDatabase.LoadAssetAtPath<WeaponPropertiesTemplate>(AssetDatabase.GetAssetPath(id))));
 				lists[1].ForEach(id => weaponBases?.Add(AssetDatabase.LoadAssetAtPath<WeaponBase>(AssetDatabase.GetAssetPath(id))));
 				lists[2].ForEach(id => stocks?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
-				lists[3].ForEach(id => handles?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
+				lists[3].ForEach(id => grips?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
 				lists[4].ForEach(id => magazines?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
 				lists[5].ForEach(id => scopes?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
 				lists[6].ForEach(id => barrels?.Add(AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GetAssetPath(id))));
