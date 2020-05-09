@@ -262,6 +262,40 @@ namespace WinterboltGames.RandomWeaponGenerator
 
 		private void DrawList<T>(ref List<T> list) where T : Object
 		{
+			Event currentEvent = Event.current;
+
+			Rect dropRect = GUILayoutUtility.GetRect(0.0f, 32.0f, GUILayout.ExpandWidth(true));
+
+			GUI.Box(dropRect, "Drag and drop items here to add to the list", EditorStyles.helpBox);
+
+			if (currentEvent.type == EventType.DragUpdated || currentEvent.type == EventType.DragPerform)
+			{
+				if (dropRect.Contains(currentEvent.mousePosition))
+				{
+					DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+					if (currentEvent.type == EventType.DragPerform)
+					{
+						foreach (Object objectReference in DragAndDrop.objectReferences)
+						{
+							if (objectReference is T typeReference)
+							{
+								if (list == null)
+								{
+									list = new List<T>();
+								}
+
+								list.Add(typeReference);
+							}
+						}
+
+						DragAndDrop.AcceptDrag();
+
+						currentEvent.Use();
+					}
+				}
+			}
+
 			if (GUILayout.Button("Add"))
 			{
 				if (list == null)
